@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "InputMappingContext.h"
 #include "ShooterCharacter.generated.h"
 
 UCLASS()
@@ -26,4 +27,30 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+private:
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TSoftObjectPtr<UInputMappingContext> InputMapping;
+
+private:
+	enum InputAction
+	{
+		IA_MoveForward = 0,
+		IA_MoveRight,
+		IA_LookUp,
+		IA_LookRight,
+		IA_Jump,
+
+		IA_Num
+	};
+
+	using InputActionNameArray = FStringView[IA_Num];
+	using InputActionValueArray = TStaticArray<FInputActionValue, IA_Num>;
+
+	static const InputActionNameArray InputActionNames;
+
+	InputActionValueArray InputActionValues = InputActionValueArray(InPlace, 0.0f);
+
+	void UpdateInputs(const FInputActionInstance& Instance, int32 InputIndex);
+
+	void UpdateMovement();
 };
