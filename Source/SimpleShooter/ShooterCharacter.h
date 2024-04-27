@@ -31,6 +31,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TSoftObjectPtr<UInputMappingContext> InputMapping;
 
+	UPROPERTY(EditAnywhere, Category = "Input")
+	float RotationRate = 60.0f;
+
 private:
 	enum InputAction
 	{
@@ -38,6 +41,8 @@ private:
 		IA_MoveRight,
 		IA_LookUp,
 		IA_LookRight,
+		IA_LookUpRate,
+		IA_LookRightRate,
 		IA_Jump,
 
 		IA_Num
@@ -52,5 +57,5 @@ private:
 
 	void UpdateInputs(const FInputActionInstance& Instance, int32 InputIndex);
 
-	void UpdateMovement();
+	void UpdateMovement(float DeltaTime);
 };

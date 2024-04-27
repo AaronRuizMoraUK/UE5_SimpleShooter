@@ -11,7 +11,9 @@ const AShooterCharacter::InputActionNameArray AShooterCharacter::InputActionName
 	TEXT("IA_MoveForward"),
 	TEXT("IA_MoveRight"),
 	TEXT("IA_LookUp"),
-	TEXT("IA_Look"),
+	TEXT("IA_LookRight"),
+	TEXT("IA_LookUpRate"),
+	TEXT("IA_LookRightRate"),
 	TEXT("IA_Jump")
 };
 
@@ -40,7 +42,7 @@ void AShooterCharacter::Tick(float DeltaTime)
 	//	UE_LOG(LogTemp, Display, TEXT("- %.*s: %f"), InputActionNames[i].Len(), InputActionNames[i].GetData(), InputActionValues[i].Get<float>());
 	//}
 
-	UpdateMovement();
+	UpdateMovement(DeltaTime);
 }
 
 // Called to bind functionality to input
@@ -115,13 +117,16 @@ void AShooterCharacter::UpdateInputs(const FInputActionInstance& Instance, int32
 	//	InputActionNames[InputIndex].Len(), InputActionNames[InputIndex].GetData(), InputActionValues[InputIndex].Get<float>());
 }
 
-void AShooterCharacter::UpdateMovement()
+void AShooterCharacter::UpdateMovement(float DeltaTime)
 {
 	AddMovementInput(GetActorForwardVector(), InputActionValues[IA_MoveForward].Get<float>());
 	AddMovementInput(GetActorRightVector(), InputActionValues[IA_MoveRight].Get<float>());
 
 	AddControllerPitchInput(InputActionValues[IA_LookUp].Get<float>());
 	AddControllerYawInput(InputActionValues[IA_LookRight].Get<float>());
+
+	AddControllerPitchInput(InputActionValues[IA_LookUpRate].Get<float>() * RotationRate * DeltaTime);
+	AddControllerYawInput(InputActionValues[IA_LookRightRate].Get<float>() * RotationRate * DeltaTime);
 
 	if (InputActionValues[IA_Jump].Get<bool>())
 	{
