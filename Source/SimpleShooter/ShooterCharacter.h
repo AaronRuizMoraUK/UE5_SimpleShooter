@@ -7,6 +7,8 @@
 #include "InputMappingContext.h"
 #include "ShooterCharacter.generated.h"
 
+class AGun;
+
 UCLASS()
 class SIMPLESHOOTER_API AShooterCharacter : public ACharacter
 {
@@ -28,11 +30,14 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
-	UPROPERTY(EditAnywhere, Category = "Input")
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TSoftObjectPtr<UInputMappingContext> InputMapping;
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	float RotationRate = 60.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	TSubclassOf<AGun> GunClass;
 
 private:
 	enum InputAction
@@ -54,6 +59,8 @@ private:
 	static const InputActionNameArray InputActionNames;
 
 	InputActionValueArray InputActionValues = InputActionValueArray(InPlace, 0.0f);
+
+	TObjectPtr<AGun> Gun;
 
 	void UpdateInputs(const FInputActionInstance& Instance, int32 InputIndex);
 
