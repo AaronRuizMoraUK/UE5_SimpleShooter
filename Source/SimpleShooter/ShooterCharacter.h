@@ -49,6 +49,7 @@ private:
 		IA_LookUpRate,
 		IA_LookRightRate,
 		IA_Jump,
+		IA_Shoot,
 
 		IA_Num
 	};

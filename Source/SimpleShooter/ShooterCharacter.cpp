@@ -15,7 +15,8 @@ const AShooterCharacter::InputActionNameArray AShooterCharacter::InputActionName
 	TEXT("IA_LookRight"),
 	TEXT("IA_LookUpRate"),
 	TEXT("IA_LookRightRate"),
-	TEXT("IA_Jump")
+	TEXT("IA_Jump"),
+	TEXT("IA_Shoot")
 };
 
 // Sets default values
@@ -34,9 +35,12 @@ void AShooterCharacter::BeginPlay()
 	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
 	GetMesh()->HideBoneByName(TEXT("weapon_l"), EPhysBodyOp::PBO_None);
 
-	Gun = GetWorld()->SpawnActor<AGun>(GunClass, GetActorLocation(), GetActorRotation());
-	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("weapon_rSocket"));
-	Gun->SetOwner(this); // Important for other systems like damage or multiplayer.
+	if (GunClass)
+	{
+		Gun = GetWorld()->SpawnActor<AGun>(GunClass, GetActorLocation(), GetActorRotation());
+		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("weapon_rSocket"));
+		Gun->SetOwner(this); // Important for other systems like damage or multiplayer.
+	}
 }
 
 // Called every frame
@@ -138,5 +142,10 @@ void AShooterCharacter::UpdateMovement(float DeltaTime)
 	if (InputActionValues[IA_Jump].Get<bool>())
 	{
 		Jump();
+	}
+
+	if (Gun && InputActionValues[IA_Shoot].Get<bool>())
+	{
+		Gun->PullTrigger();
 	}
 }

@@ -7,6 +7,7 @@
 #include "Gun.generated.h"
 
 class USkeletalMeshComponent;
+class UParticleSystem;
 
 UCLASS()
 class SIMPLESHOOTER_API AGun : public AActor
@@ -16,6 +17,8 @@ class SIMPLESHOOTER_API AGun : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AGun();
+
+	void PullTrigger();
 
 protected:
 	// Called when the game starts or when spawned
@@ -31,4 +34,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USkeletalMeshComponent> Mesh;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UParticleSystem> MuzzleFlash;
 };
