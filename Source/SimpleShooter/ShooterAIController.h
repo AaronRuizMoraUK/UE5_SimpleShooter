@@ -24,7 +24,4 @@ public:
 private:
 	UPROPERTY(EditAnywhere, Category = "AI")
 	TObjectPtr<UBehaviorTree> AIBehaviour;
-
-	//UPROPERTY(EditAnywhere, Category = "Navigation")
-	//float AcceptanceRadius = 200.0f;
 };
