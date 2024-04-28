@@ -5,6 +5,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystem.h"
+#include "DrawDebugHelpers.h"
 
 // Sets default values
 AGun::AGun()
@@ -23,6 +24,25 @@ AGun::AGun()
 void AGun::PullTrigger()
 {
 	UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleFlashSocket"));
+
+	if (auto* OwnerPawn = Cast<APawn>(GetOwner()))
+	{
+		if (auto* OwnerController = OwnerPawn->GetController())
+		{
+			FVector ViewPointLocation;
+			FRotator ViewPointRotation;
+			OwnerController->GetPlayerViewPoint(ViewPointLocation, ViewPointRotation);
+
+			if (FHitResult HitResult;
+				GetWorld()->LineTraceSingleByChannel(HitResult,
+					ViewPointLocation,
+					ViewPointLocation + ViewPointRotation.Vector() * MaxRange,
+					ECC_GameTraceChannel1))
+			{
+				DrawDebugPoint(GetWorld(), HitResult.ImpactPoint, 10.0f, FColor::Red, false, 2.0f);
+			}
+		}
+	}
 }
 
 // Called when the game starts or when spawned
