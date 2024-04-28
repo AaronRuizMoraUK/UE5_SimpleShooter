@@ -35,8 +35,11 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USkeletalMeshComponent> Mesh;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "FX")
 	TObjectPtr<UParticleSystem> MuzzleFlash;
+
+	UPROPERTY(EditAnywhere, Category = "FX")
+	TObjectPtr<UParticleSystem> ImpactFX;
 
 	UPROPERTY(EditAnywhere)
 	float MaxRange = 10000.0f;

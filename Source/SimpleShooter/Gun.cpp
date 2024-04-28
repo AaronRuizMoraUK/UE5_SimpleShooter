@@ -39,7 +39,13 @@ void AGun::PullTrigger()
 					ViewPointLocation + ViewPointRotation.Vector() * MaxRange,
 					ECC_GameTraceChannel1))
 			{
-				DrawDebugPoint(GetWorld(), HitResult.ImpactPoint, 10.0f, FColor::Red, false, 2.0f);
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactFX, HitResult.ImpactPoint, HitResult.ImpactNormal.Rotation());
+
+				//DrawDebugPoint(GetWorld(), HitResult.ImpactPoint, 10.0f, FColor::Red, false, 2.0f);
+				//DrawDebugDirectionalArrow(GetWorld(), 
+				//	HitResult.ImpactPoint, 
+				//	HitResult.ImpactPoint + HitResult.ImpactNormal * 100.0f, 
+				//	100.0f, FColor::Blue, false, 3.0f);
 			}
 		}
 	}
