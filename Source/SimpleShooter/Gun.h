@@ -41,6 +41,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = "FX")
 	TObjectPtr<UParticleSystem> ImpactFX;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float Damage = 10.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
 	float MaxRange = 10000.0f;
 };

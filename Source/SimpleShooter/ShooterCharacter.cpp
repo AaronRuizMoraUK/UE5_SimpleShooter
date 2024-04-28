@@ -41,6 +41,10 @@ void AShooterCharacter::BeginPlay()
 		Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("weapon_rSocket"));
 		Gun->SetOwner(this); // Important for other systems like damage or multiplayer.
 	}
+
+	Health = MaxHealth;
+
+	OnTakePointDamage.AddDynamic(this, &AShooterCharacter::OnPointDamageTaken);
 }
 
 // Called every frame
@@ -118,6 +122,18 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(GetActionItem(InputActionNames[i]), ETriggerEvent::Triggered, this, &AShooterCharacter::UpdateInputs, i);
 		EnhancedInputComponent->BindAction(GetActionItem(InputActionNames[i]), ETriggerEvent::Completed, this, &AShooterCharacter::UpdateInputs, i);
 	}
+}
+
+void AShooterCharacter::OnPointDamageTaken(AActor* DamagedActor, float Damage, 
+	AController* InstigatedBy, FVector HitLocation, 
+	UPrimitiveComponent* FHitComponent, FName BoneName, FVector ShotFromDirection,
+	const UDamageType* DamageType, AActor* DamageCauser)
+{
+	//UE_LOG(LogTemp, Display, TEXT("Actor %s (%s) hit by %s with Damage %0.2f from %s"), 
+	//	*GetName(), *DamagedActor->GetName(), *DamageCauser->GetName(), Damage, *ShotFromDirection.ToString());
+
+	Health = FMath::Max(0.0f, Health - Damage);
+	UE_LOG(LogTemp, Display, TEXT("%s health %.2f"), *GetName(), Health);
 }
 
 void AShooterCharacter::UpdateInputs(const FInputActionInstance& Instance, int32 InputIndex)

@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystem.h"
 #include "DrawDebugHelpers.h"
+#include "Engine/DamageEvents.h"
 
 // Sets default values
 AGun::AGun()
@@ -39,13 +40,22 @@ void AGun::PullTrigger()
 					ViewPointLocation + ViewPointRotation.Vector() * MaxRange,
 					ECC_GameTraceChannel1))
 			{
-				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactFX, HitResult.ImpactPoint, HitResult.ImpactNormal.Rotation());
-
 				//DrawDebugPoint(GetWorld(), HitResult.ImpactPoint, 10.0f, FColor::Red, false, 2.0f);
 				//DrawDebugDirectionalArrow(GetWorld(), 
 				//	HitResult.ImpactPoint, 
 				//	HitResult.ImpactPoint + HitResult.ImpactNormal * 100.0f, 
 				//	100.0f, FColor::Blue, false, 3.0f);
+
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactFX, HitResult.ImpactPoint, HitResult.ImpactNormal.Rotation());
+
+				if (auto* HitActor = HitResult.GetActor())
+				{
+					//UE_LOG(LogTemp, Display, TEXT("Gun %s (Owner %s) hits %s with Damage %0.2f from %s"),
+					//	*GetName(), *OwnerPawn->GetName(), *HitActor->GetName(), Damage, *ViewPointRotation.Vector().ToString());
+
+					FPointDamageEvent DamageEvent(Damage, HitResult, ViewPointRotation.Vector(), nullptr);
+					HitActor->TakeDamage(Damage, DamageEvent, OwnerController, this);
+				}
 			}
 		}
 	}

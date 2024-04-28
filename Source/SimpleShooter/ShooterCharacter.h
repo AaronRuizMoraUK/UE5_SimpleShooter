@@ -39,6 +39,18 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	TSubclassOf<AGun> GunClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	float MaxHealth = 100.0f;
+
+	UPROPERTY(VisibleAnywhere, Category = "Combat")
+	float Health = 0.0f;
+
+	UFUNCTION()
+	void OnPointDamageTaken(AActor* DamagedActor, float Damage, 
+		AController* InstigatedBy, FVector HitLocation, 
+		UPrimitiveComponent* FHitComponent, FName BoneName, FVector ShotFromDirection, 
+		const UDamageType* DamageType, AActor* DamageCauser);
+
 private:
 	enum InputAction
 	{
