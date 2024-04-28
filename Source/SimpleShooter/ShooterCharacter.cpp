@@ -124,6 +124,11 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	}
 }
 
+bool AShooterCharacter::IsAlive() const
+{
+	return Health > 0.0f;
+}
+
 void AShooterCharacter::OnPointDamageTaken(AActor* DamagedActor, float Damage, 
 	AController* InstigatedBy, FVector HitLocation, 
 	UPrimitiveComponent* FHitComponent, FName BoneName, FVector ShotFromDirection,
