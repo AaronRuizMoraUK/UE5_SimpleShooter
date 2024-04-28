@@ -22,4 +22,7 @@ public:
 	// Called every frame
 	void Tick(float DeltaTime) override;
 	
+private:
+	UPROPERTY(EditAnywhere, Category = "Navigation")
+	float AcceptanceRadius = 200.0f;
 };
