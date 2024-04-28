@@ -17,5 +17,9 @@ class SIMPLESHOOTER_API AShooterAIController : public AAIController
 protected:
 	// Called when the game starts or when spawned
 	void BeginPlay() override;
+
+public:
+	// Called every frame
+	void Tick(float DeltaTime) override;
 	
 };
