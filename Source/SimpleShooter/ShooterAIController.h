@@ -6,9 +6,8 @@
 #include "AIController.h"
 #include "ShooterAIController.generated.h"
 
-/**
- * 
- */
+class UBehaviorTree;
+
 UCLASS()
 class SIMPLESHOOTER_API AShooterAIController : public AAIController
 {
@@ -23,6 +22,9 @@ public:
 	void Tick(float DeltaTime) override;
 	
 private:
-	UPROPERTY(EditAnywhere, Category = "Navigation")
-	float AcceptanceRadius = 200.0f;
+	UPROPERTY(EditAnywhere, Category = "AI")
+	TObjectPtr<UBehaviorTree> AIBehaviour;
+
+	//UPROPERTY(EditAnywhere, Category = "Navigation")
+	//float AcceptanceRadius = 200.0f;
 };
