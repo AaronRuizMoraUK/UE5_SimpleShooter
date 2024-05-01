@@ -19,7 +19,6 @@ const AShooterCharacter::InputActionNameArray AShooterCharacter::InputActionName
 	TEXT("IA_Shoot")
 };
 
-// Sets default values
 AShooterCharacter::AShooterCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -27,7 +26,6 @@ AShooterCharacter::AShooterCharacter()
 
 }
 
-// Called when the game starts or when spawned
 void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -47,30 +45,32 @@ void AShooterCharacter::BeginPlay()
 	OnTakePointDamage.AddDynamic(this, &AShooterCharacter::OnPointDamageTaken);
 }
 
-// Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//for (int32 i = 0; i < IA_Num; ++i)
-	//{
-	//	UE_LOG(LogTemp, Display, TEXT("- %.*s: %f"), InputActionNames[i].Len(), InputActionNames[i].GetData(), InputActionValues[i].Get<float>());
-	//}
-
-	UpdateMovement(DeltaTime);
-
-	if (InputActionValues[IA_Jump].Get<bool>())
+	// If character is controlled by Player
+	if (Cast<APlayerController>(GetController()))
 	{
-		Jump();
-	}
+		//for (int32 i = 0; i < IA_Num; ++i)
+		//{
+		//	UE_LOG(LogTemp, Display, TEXT("- %.*s: %f"), InputActionNames[i].Len(), InputActionNames[i].GetData(), InputActionValues[i].Get<float>());
+		//}
 
-	if (InputActionValues[IA_Shoot].Get<bool>())
-	{
-		Shoot();
+		UpdatePlayerMovement(DeltaTime);
+
+		if (InputActionValues[IA_Jump].Get<bool>())
+		{
+			Jump();
+		}
+
+		if (InputActionValues[IA_Shoot].Get<bool>())
+		{
+			Shoot();
+		}
 	}
 }
 
-// Called to bind functionality to input
 void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -167,7 +167,7 @@ void AShooterCharacter::UpdateInputs(const FInputActionInstance& Instance, int32
 	//	InputActionNames[InputIndex].Len(), InputActionNames[InputIndex].GetData(), InputActionValues[InputIndex].Get<float>());
 }
 
-void AShooterCharacter::UpdateMovement(float DeltaTime)
+void AShooterCharacter::UpdatePlayerMovement(float DeltaTime)
 {
 	AddMovementInput(GetActorForwardVector(), InputActionValues[IA_MoveForward].Get<float>());
 	AddMovementInput(GetActorRightVector(), InputActionValues[IA_MoveRight].Get<float>());
