@@ -58,6 +58,16 @@ void AShooterCharacter::Tick(float DeltaTime)
 	//}
 
 	UpdateMovement(DeltaTime);
+
+	if (InputActionValues[IA_Jump].Get<bool>())
+	{
+		Jump();
+	}
+
+	if (InputActionValues[IA_Shoot].Get<bool>())
+	{
+		Shoot();
+	}
 }
 
 // Called to bind functionality to input
@@ -129,6 +139,14 @@ bool AShooterCharacter::IsAlive() const
 	return Health > 0.0f;
 }
 
+void  AShooterCharacter::Shoot()
+{
+	if (Gun)
+	{
+		Gun->PullTrigger();
+	}
+}
+
 void AShooterCharacter::OnPointDamageTaken(AActor* DamagedActor, float Damage, 
 	AController* InstigatedBy, FVector HitLocation, 
 	UPrimitiveComponent* FHitComponent, FName BoneName, FVector ShotFromDirection,
@@ -159,14 +177,4 @@ void AShooterCharacter::UpdateMovement(float DeltaTime)
 
 	AddControllerPitchInput(InputActionValues[IA_LookUpRate].Get<float>() * RotationRate * DeltaTime);
 	AddControllerYawInput(InputActionValues[IA_LookRightRate].Get<float>() * RotationRate * DeltaTime);
-
-	if (InputActionValues[IA_Jump].Get<bool>())
-	{
-		Jump();
-	}
-
-	if (Gun && InputActionValues[IA_Shoot].Get<bool>())
-	{
-		Gun->PullTrigger();
-	}
 }

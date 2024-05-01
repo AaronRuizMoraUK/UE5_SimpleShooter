@@ -32,6 +32,9 @@ public:
 	UFUNCTION(BlueprintPure)
 	bool IsAlive() const;
 
+	UFUNCTION(BlueprintCallable)
+	void Shoot();
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TSoftObjectPtr<UInputMappingContext> InputMapping;

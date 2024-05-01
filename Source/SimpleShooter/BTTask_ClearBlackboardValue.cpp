@@ -13,13 +13,11 @@ EBTNodeResult::Type UBTTask_ClearBlackboardValue::ExecuteTask(UBehaviorTreeCompo
 {
 	Super::ExecuteTask(OwnerComp, NodeMemory);
 
-	auto* BlackboardComp = OwnerComp.GetBlackboardComponent();
-	if (!BlackboardComp)
+	if (auto* BlackboardComp = OwnerComp.GetBlackboardComponent())
 	{
-		return EBTNodeResult::Failed;
+		BlackboardComp->ClearValue(GetSelectedBlackboardKey());
+		return EBTNodeResult::Succeeded;
 	}
 
-	BlackboardComp->ClearValue(GetSelectedBlackboardKey());
-
-    return EBTNodeResult::Succeeded;
+	return EBTNodeResult::Failed;
 }

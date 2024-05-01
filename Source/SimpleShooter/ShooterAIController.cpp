@@ -21,23 +21,4 @@ void AShooterAIController::BeginPlay()
 void AShooterAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	auto* BlackboardComp = GetBlackboardComponent();
-	if (!BlackboardComp)
-	{
-		return;
-	}
-
-	const EAIFocusPriority::Type FocusPriority = EAIFocusPriority::Gameplay;
-
-	if (APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0); 
-		PlayerPawn && LineOfSightTo(PlayerPawn))
-	{
-		BlackboardComp->SetValueAsVector(TEXT("PlayerLocation"), PlayerPawn->GetActorLocation());
-		BlackboardComp->SetValueAsVector(TEXT("LastKnownPlayerLocation"), PlayerPawn->GetActorLocation());
-	}
-	else
-	{
-		BlackboardComp->ClearValue(TEXT("PlayerLocation"));
-	}
 }
