@@ -34,11 +34,15 @@ void AGun::PullTrigger()
 			FRotator ViewPointRotation;
 			OwnerController->GetPlayerViewPoint(ViewPointLocation, ViewPointRotation);
 
-			if (FHitResult HitResult;
-				GetWorld()->LineTraceSingleByChannel(HitResult,
+			FHitResult HitResult;
+			FCollisionQueryParams QueryParams;
+			QueryParams.AddIgnoredActors(TArray<AActor*>{ this, GetOwner() });
+
+			if (GetWorld()->LineTraceSingleByChannel(HitResult,
 					ViewPointLocation,
 					ViewPointLocation + ViewPointRotation.Vector() * MaxRange,
-					ECC_GameTraceChannel1))
+					ECC_GameTraceChannel1,
+					QueryParams))
 			{
 				//DrawDebugPoint(GetWorld(), HitResult.ImpactPoint, 10.0f, FColor::Red, false, 2.0f);
 				//DrawDebugDirectionalArrow(GetWorld(), 
