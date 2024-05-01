@@ -6,6 +6,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputAction.h"
+#include "Components/CapsuleComponent.h"
 
 const AShooterCharacter::InputActionNameArray AShooterCharacter::InputActionNames =
 {
@@ -157,6 +158,16 @@ void AShooterCharacter::OnPointDamageTaken(AActor* DamagedActor, float Damage,
 
 	Health = FMath::Max(0.0f, Health - Damage);
 	UE_LOG(LogTemp, Display, TEXT("%s health %.2f"), *GetName(), Health);
+
+	if (!IsAlive())
+	{
+		// Detaching the controller from this character.
+		// If it's player controlled, then it won't receive more input updates.
+		// If it's AI controlled, then it won't be updated by its behavior tree (part of Shooter AI Controller) anymore.
+		DetachFromControllerPendingDestroy();
+
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
 }
 
 void AShooterCharacter::UpdateInputs(const FInputActionInstance& Instance, int32 InputIndex)
