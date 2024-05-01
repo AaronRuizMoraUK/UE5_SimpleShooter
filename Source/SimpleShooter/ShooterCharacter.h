@@ -30,7 +30,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintPure)
-	bool IsAlive() const;
+	bool IsDead() const;
 
 	UFUNCTION(BlueprintCallable)
 	void Shoot();

@@ -136,9 +136,9 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	}
 }
 
-bool AShooterCharacter::IsAlive() const
+bool AShooterCharacter::IsDead() const
 {
-	return Health > 0.0f;
+	return Health <= 0.0f;
 }
 
 void  AShooterCharacter::Shoot()
@@ -160,7 +160,7 @@ void AShooterCharacter::OnPointDamageTaken(AActor* DamagedActor, float Damage,
 	Health = FMath::Max(0.0f, Health - Damage);
 	UE_LOG(LogTemp, Display, TEXT("%s health %.2f"), *GetName(), Health);
 
-	if (!IsAlive())
+	if (IsDead())
 	{
 		// Detaching the controller from this character.
 		// If it's player controlled, then it won't receive more input updates.
