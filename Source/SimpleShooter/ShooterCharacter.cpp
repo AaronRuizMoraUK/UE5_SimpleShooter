@@ -3,6 +3,7 @@
 
 #include "ShooterCharacter.h"
 #include "Gun.h"
+#include "SimpleShooterGameModeBase.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputAction.h"
@@ -166,7 +167,14 @@ void AShooterCharacter::OnPointDamageTaken(AActor* DamagedActor, float Damage,
 		// If it's AI controlled, then it won't be updated by its behavior tree (part of Shooter AI Controller) anymore.
 		DetachFromControllerPendingDestroy();
 
+		// Disable collision, which for the character is its capsule.
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+		// Inform the game mode that this character has died.
+		if (auto* GameMode = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>())
+		{
+			GameMode->PawnKilled(this);
+		}
 	}
 }
 
