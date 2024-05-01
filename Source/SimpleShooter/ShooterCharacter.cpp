@@ -162,6 +162,12 @@ void AShooterCharacter::OnPointDamageTaken(AActor* DamagedActor, float Damage,
 
 	if (IsDead())
 	{
+		// Inform the game mode that this character has died.
+		if (auto* GameMode = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>())
+		{
+			GameMode->PawnKilled(this);
+		}
+
 		// Detaching the controller from this character.
 		// If it's player controlled, then it won't receive more input updates.
 		// If it's AI controlled, then it won't be updated by its behavior tree (part of Shooter AI Controller) anymore.
@@ -169,12 +175,6 @@ void AShooterCharacter::OnPointDamageTaken(AActor* DamagedActor, float Damage,
 
 		// Disable collision, which for the character is its capsule.
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-		// Inform the game mode that this character has died.
-		if (auto* GameMode = GetWorld()->GetAuthGameMode<ASimpleShooterGameModeBase>())
-		{
-			GameMode->PawnKilled(this);
-		}
 	}
 }
 
