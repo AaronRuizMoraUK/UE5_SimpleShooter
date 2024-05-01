@@ -10,5 +10,5 @@ void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner
     UE_LOG(LogTemp, Display, TEXT("GameHasEnded - Won? %s"), bIsWinner ? TEXT("YES") : TEXT("NO"));
 
     FTimerHandle RestartLevelTimerHandle;
-    GetWorldTimerManager().SetTimer(RestartLevelTimerHandle, [this]() { RestartLevel(); }, 3.0f, false);
+    GetWorldTimerManager().SetTimer(RestartLevelTimerHandle, [this]() { RestartLevel(); }, RestartDelay, false);
 }

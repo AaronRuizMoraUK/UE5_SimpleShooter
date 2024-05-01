@@ -13,4 +13,8 @@ class SIMPLESHOOTER_API AShooterPlayerController : public APlayerController
 	
 public:
 	void GameHasEnded(AActor* EndGameFocus = nullptr, bool bIsWinner = false) override;
+
+private:
+	UPROPERTY(EditAnywhere)
+	float RestartDelay = 3.0f;
 };
