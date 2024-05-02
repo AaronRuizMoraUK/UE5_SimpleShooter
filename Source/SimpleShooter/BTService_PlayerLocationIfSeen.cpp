@@ -5,6 +5,8 @@
 #include "AIController.h"
 #include "Kismet/GameplayStatics.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "BehaviorTree/Blackboard/BlackboardKeyType_Vector.h"
+#include "BehaviorTree/Blackboard/BlackboardKeyType_Object.h"
 
 UBTService_PlayerLocationIfSeen::UBTService_PlayerLocationIfSeen()
 {
@@ -30,7 +32,18 @@ void UBTService_PlayerLocationIfSeen::TickNode(UBehaviorTreeComponent& OwnerComp
 	if (auto* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 		AIController->LineOfSightTo(PlayerPawn))
 	{
-		BlackboardComp->SetValueAsVector(GetSelectedBlackboardKey(), PlayerPawn->GetActorLocation());
+		if (BlackboardKey.SelectedKeyType == UBlackboardKeyType_Vector::StaticClass())
+		{
+			BlackboardComp->SetValueAsVector(GetSelectedBlackboardKey(), PlayerPawn->GetActorLocation());
+		}
+		else if (BlackboardKey.SelectedKeyType == UBlackboardKeyType_Object::StaticClass())
+		{
+			BlackboardComp->SetValueAsObject(GetSelectedBlackboardKey(), PlayerPawn);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Blackboard key %s is not an object or vector type"), *GetSelectedBlackboardKey().ToString())
+		}
 	}
 	else
 	{
