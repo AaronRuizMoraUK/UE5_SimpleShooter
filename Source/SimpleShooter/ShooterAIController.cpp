@@ -6,7 +6,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
-// Called when the game starts or when spawned
 void AShooterAIController::BeginPlay()
 {
 	Super::BeginPlay();

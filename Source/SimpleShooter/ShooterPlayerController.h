@@ -10,6 +10,10 @@ UCLASS()
 class SIMPLESHOOTER_API AShooterPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
+protected:
+	// Called when the game starts or when spawned
+	void BeginPlay() override;
 	
 public:
 	void GameHasEnded(AActor* EndGameFocus = nullptr, bool bIsWinner = false) override;
@@ -23,4 +27,10 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "UI")
 	TSubclassOf<UUserWidget> WinScreenClass;
+
+	UPROPERTY(EditAnywhere, Category = "UI")
+	TSubclassOf<UUserWidget> HUDClass;
+
+private:
+	TObjectPtr<UUserWidget> HUD;
 };
