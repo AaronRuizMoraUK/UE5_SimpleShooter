@@ -136,6 +136,11 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	}
 }
 
+float AShooterCharacter::GetHealthPercent() const
+{
+	return Health / MaxHealth;
+}
+
 bool AShooterCharacter::IsDead() const
 {
 	return Health <= 0.0f;

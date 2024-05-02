@@ -30,6 +30,9 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintPure)
+	float GetHealthPercent() const;
+
+	UFUNCTION(BlueprintPure)
 	bool IsDead() const;
 
 	UFUNCTION(BlueprintCallable)
