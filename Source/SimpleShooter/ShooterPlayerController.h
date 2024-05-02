@@ -15,6 +15,12 @@ public:
 	void GameHasEnded(AActor* EndGameFocus = nullptr, bool bIsWinner = false) override;
 
 private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Level")
 	float RestartDelay = 3.0f;
+
+	UPROPERTY(EditAnywhere, Category = "UI")
+	TSubclassOf<UUserWidget> LoseScreenClass;
+
+	UPROPERTY(EditAnywhere, Category = "UI")
+	TSubclassOf<UUserWidget> WinScreenClass;
 };
