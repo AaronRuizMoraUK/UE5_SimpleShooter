@@ -10,16 +10,13 @@ void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner
 
     UE_LOG(LogTemp, Display, TEXT("GameHasEnded - Won? %s"), bIsWinner ? TEXT("YES") : TEXT("NO"));
 
-    if (bIsWinner)
-    {
+    UUserWidget* EndGameScreen = (bIsWinner)
+        ? CreateWidget(this, WinScreenClass)
+        : CreateWidget(this, LoseScreenClass);
 
-    }
-    else
+    if (EndGameScreen)
     {
-        if (UUserWidget* LoseScreen = CreateWidget(this, LoseScreenClass))
-        {
-            LoseScreen->AddToViewport();
-        }
+        EndGameScreen->AddToViewport();
     }
 
     FTimerHandle RestartLevelTimerHandle;

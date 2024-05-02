@@ -16,7 +16,7 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Level")
-	float RestartDelay = 3.0f;
+	float RestartDelay = 5.0f;
 
 	UPROPERTY(EditAnywhere, Category = "UI")
 	TSubclassOf<UUserWidget> LoseScreenClass;

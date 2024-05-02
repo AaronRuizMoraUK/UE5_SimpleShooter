@@ -18,6 +18,8 @@ protected:
 	void BeginPlay() override;
 
 public:
+	bool IsDead() const;
+
 	// Called every frame
 	void Tick(float DeltaTime) override;
 	

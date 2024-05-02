@@ -2,6 +2,10 @@
 
 
 #include "KillEmAllGameMode.h"
+#include "ShooterAIController.h"
+#include "EngineUtils.h"
+#include "GameFramework/Controller.h"
+#include "Algo/AllOf.h"
 
 void AKillEmAllGameMode::PawnKilled(APawn* PawnKilled)
 {
@@ -9,8 +13,28 @@ void AKillEmAllGameMode::PawnKilled(APawn* PawnKilled)
 
     UE_LOG(LogTemp, Display, TEXT("AKillEmAllGameMode: Pawn %s was killed."), *PawnKilled->GetName());
 
-    if (auto* PlayerController = Cast<APlayerController>(PawnKilled->GetController()))
+    // If the player was killed, end the game and the player lost.
+    if (auto* Controller = PawnKilled->GetController(); 
+        Controller && Controller->IsPlayerController())
     {
-        PlayerController->GameHasEnded(nullptr, false /*Lose*/);
+        EndGame(false);
+    }
+    else
+    {
+        // If all enemies are dead, end the game and the player wins.
+        if (Algo::AllOf(TActorRange<AShooterAIController>(GetWorld()), &AShooterAIController::IsDead))
+        {
+            EndGame(true);
+        }
+    }
+}
+
+void AKillEmAllGameMode::EndGame(bool bIsPlayerWinner)
+{
+    // Notify all controllers that the game has ended and if they are in the winning team.
+    for (auto* Controller : TActorRange<AController>(GetWorld()))
+    {
+        const bool bIsWinner = Controller->IsPlayerController() == bIsPlayerWinner;
+        Controller->GameHasEnded(Controller->GetPawn()/*Actor to focus on*/, bIsWinner);
     }
 }
