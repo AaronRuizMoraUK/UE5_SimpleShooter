@@ -25,20 +25,27 @@ AGun::AGun()
 void AGun::PullTrigger()
 {
 	UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleFlashSocket"));
+	UGameplayStatics::SpawnSoundAttached(MuzzleSound, Mesh, TEXT("MuzzleFlashSocket"));
 
 	FHitResult HitResult;
 	FVector ShotDirection;
 	if (GunTrace(HitResult, ShotDirection))
 	{
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactFX, HitResult.ImpactPoint, HitResult.ImpactNormal.Rotation());
-
-		if (auto* HitActor = HitResult.GetActor())
+		if (auto* HitPawn = Cast<APawn>(HitResult.GetActor()))
 		{
 			//UE_LOG(LogTemp, Display, TEXT("Gun %s hits %s with Damage %0.2f from %s"),
 			//	*GetName(), *HitActor->GetName(), Damage, *ShotDirection.ToString());
 
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitPawnFX, HitResult.ImpactPoint, HitResult.ImpactNormal.Rotation());
+			UGameplayStatics::SpawnSoundAtLocation(GetWorld(), HitPawnSound, HitResult.ImpactPoint, HitResult.ImpactNormal.Rotation());
+
 			FPointDamageEvent DamageEvent(Damage, HitResult, ShotDirection, nullptr);
-			HitActor->TakeDamage(Damage, DamageEvent, GetOwnerController(), this);
+			HitPawn->TakeDamage(Damage, DamageEvent, GetOwnerController(), this);
+		}
+		else
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactFX, HitResult.ImpactPoint, HitResult.ImpactNormal.Rotation());
+			UGameplayStatics::SpawnSoundAtLocation(GetWorld(), ImpactSound, HitResult.ImpactPoint, HitResult.ImpactNormal.Rotation());
 		}
 	}
 }

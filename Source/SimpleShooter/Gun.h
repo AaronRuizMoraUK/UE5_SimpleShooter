@@ -40,7 +40,19 @@ private:
 	TObjectPtr<UParticleSystem> MuzzleFlash;
 
 	UPROPERTY(EditAnywhere, Category = "FX")
+	TObjectPtr<USoundBase> MuzzleSound;
+
+	UPROPERTY(EditAnywhere, Category = "FX")
 	TObjectPtr<UParticleSystem> ImpactFX;
+
+	UPROPERTY(EditAnywhere, Category = "FX")
+	TObjectPtr<USoundBase> ImpactSound;
+
+	UPROPERTY(EditAnywhere, Category = "FX")
+	TObjectPtr<UParticleSystem> HitPawnFX;
+
+	UPROPERTY(EditAnywhere, Category = "FX")
+	TObjectPtr<USoundBase> HitPawnSound;
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	float Damage = 10.0f;
