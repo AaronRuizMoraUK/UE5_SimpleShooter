@@ -8,6 +8,7 @@
 
 class USkeletalMeshComponent;
 class UParticleSystem;
+struct FHitResult;
 
 UCLASS()
 class SIMPLESHOOTER_API AGun : public AActor
@@ -46,4 +47,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	float MaxRange = 10000.0f;
+
+private:
+	AController* GetOwnerController();
+
+	bool GunTrace(FHitResult &HitResult, FVector& ShotDirection);
 };
