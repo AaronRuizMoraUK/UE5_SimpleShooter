@@ -24,7 +24,7 @@ void AShooterPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner
 
     if (HUD)
     {
-        HUD->RemoveFromViewport();
+        HUD->RemoveFromParent();
     }
 
     UUserWidget* EndGameScreen = (bIsWinner)
